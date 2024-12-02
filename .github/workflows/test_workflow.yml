@@ -1,4 +1,4 @@
-name: Compare Test Data Files
+name: Automated Testing Workflow
 
 on:
   push:
@@ -6,22 +6,32 @@ on:
       - main
 
 jobs:
-  compare_files:
-    name: Compare Files in test_data
+  test:
+    name: Run Automated Tests
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
-    - name: Compare test1_input.txt and test1_expected.txt
-      run: |
-        diff test_data/test1_input.txt test_data/test1_expected.txt || echo "test1_input.txt and test1_expected.txt are different"
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
 
-    - name: Compare test2_input.txt and test2_expected.txt
+    - name: Run tests
       run: |
-        diff test_data/test2_input.txt test_data/test2_expected.txt || echo "test2_input.txt and test2_expected.txt are different"
+        # Create output directory for test results
+        mkdir -p test_data/output
 
-    - name: Compare test3_input.txt and test3_expected.txt
-      run: |
-        diff test_data/test3_input.txt test_data/test3_expected.txt || echo "test3_input.txt and test3_expected.txt are different"
+        # Test case 1: File with 10 numbers
+        python3 find_lowest_number.py test_data/test1_input.txt test_data/output/test1_output.txt
+        diff test_data/output/test1_output.txt test_data/test1_expected.txt
+
+        # Test case 2: File with 1 number
+        python3 find_lowest_number.py test_data/test2_input.txt test_data/output/test2_output.txt
+        diff test_data/output/test2_output.txt test_data/test2_expected.txt
+
+        # Test case 3: Blank file
+        python3 find_lowest_number.py test_data/test3_input.txt test_data/output/test3_output.txt
+        diff test_data/output/test3_output.txt test_data/test3_expected.txt
