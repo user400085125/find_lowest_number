@@ -22,7 +22,7 @@ jobs:
       run: |
         mkdir -p test_data
         # Test case 1
-        python3 find_lowest_number.py test_data/test1_input.txt test_data/output/test1_output.txt
+        python3 find_lowest_number.py test_data/test1_input.txt test_data/test1_expected.txt
         diff test_data/test1_input.txt test_data/test1_expected.txt
         
         # Test case 2
