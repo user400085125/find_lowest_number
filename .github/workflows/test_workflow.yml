@@ -1,0 +1,19 @@
+name: Compare Test Data Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  compare_files:
+    name: Compare Files in test_data
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Compare test1_input.txt and test1_expected.txt
+      run: |
+        diff test_data/test1_input.txt test_data/test1_expected.txt || echo "Files are different"
